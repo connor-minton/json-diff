@@ -38,7 +38,7 @@ function compare(a, b, changes, pathStack) {
     changes.push(getValueChangedString(pathStack, a, b));
   else if (aType === 'object')
     compareObjects(a, b, changes, pathStack);
-  else
+  else if (a !== b)
     changes.push(getValueChangedString(pathStack, a, b));
 }
 
