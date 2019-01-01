@@ -1,0 +1,17 @@
+{
+  "name": "@cminton/json-diff",
+  "version": "0.0.1",
+  "description": "Output the diff of two JSONs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "diff",
+    "json",
+    "util",
+    "utils"
+  ],
+  "author": "Connor Minton",
+  "license": "ISC"
+}
