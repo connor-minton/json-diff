@@ -43,12 +43,6 @@ function getPathString(paths) {
   return pathString;
 }
 
-function preindentedJson(thing, preindentSize=2, indentSize=2) {
-  const preSizeSpaces = new Array(preindentSize).fill(' ').join('');
-  return JSON.stringify(thing, null, indentSize)
-    .replace('\n', '\n' + preSizeSpaces);
-}
-
 function getValueString(value) {
   const type = getSimpleType(value);
   if (type === 'object')
@@ -57,11 +51,6 @@ function getValueString(value) {
     return `array[${value.length}]`;
   else
     return JSON.stringify(value);
-}
-
-function indent(str, tabSize=4) {
-  const tabSpaces = new Array(tabSize).fill(' ').join('');
-  return String(str).replace(/\n/g, '\n' + tabSpaces);
 }
 
 function getValueChangedString(fromPaths, fromVal, toVal) {
@@ -99,6 +88,17 @@ function parseJsonOrThrow(json, label) {
   }
 }
 
+function promisify(asyncFunc) {
+  return (...params) => {
+    return new Promise((resolve, reject) => {
+      asyncFunc(...params, (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      });
+    });
+  };
+}
+
 module.exports = {
   JsonDiffError,
   NotComparableError,
@@ -108,5 +108,6 @@ module.exports = {
   getKeyAddedString,
   getKeyRemovedString,
   assertComparable,
-  parseJsonOrThrow
+  parseJsonOrThrow,
+  promisify
 };

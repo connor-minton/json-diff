@@ -8,12 +8,13 @@ const {
 } = require('./util');
 
 /**
- * If `a` or `b` is a string, then it will be assumed to be a JSON string
- * and parsed.
+ * `a` and `b` are JSON strings.
  */
 function jsonDiff(a, b) {
+  const objA = parseJsonOrThrow(a, 'a'),
+        objB = parseJsonOrThrow(b, 'b');
   const changes = [];
-  compare(a, b, changes, []);
+  compare(objA, objB, changes, []);
   return changes;
 }
 
