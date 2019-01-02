@@ -62,9 +62,9 @@ function getValueChangedString(fromPaths, fromVal, toVal) {
 }
 
 function getKeyAddedString(fromPaths, toVal) {
-  const toStr = getValueString(toVal)
-    , status = chalk.green.bold('+');
-  return status + chalk.green(` ${getPathString(fromPaths)} : ${toStr}`);
+  const toStr = chalk.green(getValueString(toVal))
+    , pathStr = chalk.green(getPathString(fromPaths));
+  return chalk`{green.bold +} ${pathStr} {bold :} ${toStr}`;
 }
 
 function getKeyRemovedString(fromPaths) {
