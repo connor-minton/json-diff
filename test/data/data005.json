@@ -1,0 +1,10 @@
+{
+  "foo": "bar",
+  "hello": "world",
+  "baz": {
+    "something": null,
+    "meaning": 42,
+    "special.chars": "oh no",
+    "object?": "nope"
+  }
+}

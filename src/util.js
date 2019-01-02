@@ -1,3 +1,5 @@
+const chalk = require('chalk');
+
 class JsonDiffError extends Error { }
 class NotComparableError extends JsonDiffError { }
 class InvalidJsonError extends JsonDiffError { }
@@ -20,33 +22,65 @@ function getSimpleType(thing) {
 function escapedKey(key) {
   let newKey = '';
   for (let c of key) {
-    if (c === '\\' || c === '.')
-      newKey += '\\';
-    newKey += c;
+    if (c === '.')
+      newKey += '(.)';
+    else
+      newKey += c;
   }
   return newKey
 }
 
 function getPathString(paths) {
-  let pathString = '.';
-  if (paths) {
+  let pathString = '';
+  if (paths.length > 0) {
     for (let p of paths) {
-      pathString += escapedKey(p);
+      pathString += '.' + escapedKey(p);
     }
   }
+  else
+    pathString = '.';
+
   return pathString;
 }
 
+function preindentedJson(thing, preindentSize=2, indentSize=2) {
+  const preSizeSpaces = new Array(preindentSize).fill(' ').join('');
+  return JSON.stringify(thing, null, indentSize)
+    .replace('\n', '\n' + preSizeSpaces);
+}
+
+function getValueString(value) {
+  const type = getSimpleType(value);
+  if (type === 'object')
+    return `object[${Object.keys(value).length}]`;
+  else if (type === 'array')
+    return `array[${value.length}]`;
+  else
+    return JSON.stringify(value);
+}
+
+function indent(str, tabSize=4) {
+  const tabSpaces = new Array(tabSize).fill(' ').join('');
+  return String(str).replace(/\n/g, '\n' + tabSpaces);
+}
+
 function getValueChangedString(fromPaths, fromVal, toVal) {
-  return `${getPathString(fromPaths)} : changed from ${JSON.stringify(fromVal)} to ${JSON.stringify(toVal)}`;
+  const fromStr = chalk.red(getValueString(fromVal))
+    , toStr = chalk.green(getValueString(toVal))
+    , pathStr = getPathString(fromPaths);
+
+  return chalk`{bold c} ${pathStr} {bold :} ${fromStr} {bold ->} ${toStr}`;
 }
 
 function getKeyAddedString(fromPaths, toVal) {
-  return `${getPathString(fromPaths)} : key added with value ${JSON.stringify(toVal)}`;
+  const toStr = getValueString(toVal)
+    , status = chalk.green.bold('+');
+  return status + chalk.green(` ${getPathString(fromPaths)} : ${toStr}`);
 }
 
-function getKeyRemovedString(fromPaths, fromVal) {
-  return `${getPathString(fromPaths)} : key removed with value ${JSON.stringify(fromVal)}`;
+function getKeyRemovedString(fromPaths) {
+  const status = chalk.red.bold('-');
+  return status + chalk.red(` ${getPathString(fromPaths)}`);
 }
 
 function assertComparable(aType, bType) {
