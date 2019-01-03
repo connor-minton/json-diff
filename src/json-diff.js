@@ -1,11 +1,11 @@
 const {
   getSimpleType,
   assertComparable,
-  getValueChangedString,
-  getKeyAddedString,
-  getKeyRemovedString,
   parseJsonOrThrow
 } = require('./util');
+
+const Change = require('./change');
+const { INSERTION, DELETION, MUTATION } = Change.ChangeTypes;
 
 /**
  * `a` and `b` are JSON strings.
@@ -38,7 +38,7 @@ function compare(a, b, changes, pathStack) {
     b = String(b);
 
   if (aType !== bType) {
-    changes.push(getValueChangedString(pathStack, a, b));
+    changes.push(new Change(MUTATION, pathStack, a, b));
     equal = false;
   }
   else if (aType === 'object')
@@ -46,7 +46,7 @@ function compare(a, b, changes, pathStack) {
   else if (aType === 'array')
     equal = compareArrays(a, b, changes, pathStack) && equal;
   else if (a !== b)
-    changes.push(getValueChangedString(pathStack, a, b));
+    changes.push(new Change(MUTATION, pathStack, a, b));
 
   return equal;
 }
@@ -58,7 +58,7 @@ function compareObjects(a, b, changes, pathStack) {
     pathStack.push(aKey);
     const bVal = b[aKey];
     if (getSimpleType(bVal) === 'undefined') {
-      changes.push(getKeyRemovedString(pathStack));
+      changes.push(new Change(DELETION, pathStack));
       equal = false;
     }
     else {
@@ -71,7 +71,7 @@ function compareObjects(a, b, changes, pathStack) {
     pathStack.push(bKey);
     const aVal = a[bKey];
     if (getSimpleType(aVal) === 'undefined') {
-      changes.push(getKeyAddedString(pathStack, bVal));
+      changes.push(new Change(INSERTION, pathStack, bVal));
       equal = false;
     }
     pathStack.pop(bKey);
@@ -84,7 +84,7 @@ function compareArrays(a, b, changes, pathStack) {
   let equal = true;
 
   if (a.length !== b.length) {
-    changes.push(getValueChangedString(pathStack, a, b));
+    changes.push(new Change(MUTATION, pathStack, a, b));
     equal = false;
   }
   else {
