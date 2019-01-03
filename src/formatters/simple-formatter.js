@@ -69,16 +69,7 @@ class SimpleFormatter extends Formatter {
   }
 
   _getPathString(paths) {
-    let pathString = '';
-    if (paths.length > 0) {
-      for (let p of paths) {
-        pathString += '.' + this._escapeKey(p);
-      }
-    }
-    else
-      pathString = '.';
-
-    return pathString;
+    return '.' + paths.map(path => this._escapeKey(path)).join('.');
   }
 
   _escapeKey(key) {
