@@ -1,0 +1,7 @@
+{
+  "objects": [
+    {"foo": "bar"},
+    {"bar": "soap"},
+    {"soap": "body wash"}
+  ]
+}
