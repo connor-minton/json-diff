@@ -4,7 +4,7 @@
   "baz": {
     "something": null,
     "meaning": 42,
-    "\\special.chars\\": "oh no",
+    "\\special.[chars]\\": "oh no",
     "object?": "nope"
   }
 }

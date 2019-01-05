@@ -3,6 +3,8 @@ const chalk = require('chalk');
 const { INSERTION, MUTATION, DELETION } = require('../change').ChangeTypes;
 const { getSimpleType } = require('../util');
 
+const PATH_SPECIAL_CHARS = '\\[].'
+
 class SimpleFormatter extends Formatter {
   constructor(options={}) {
     super();
@@ -69,13 +71,20 @@ class SimpleFormatter extends Formatter {
   }
 
   _getPathString(paths) {
-    return '.' + paths.map(path => this._escapeKey(path)).join('.');
+    let pathString = '';
+    for (let path of paths) {
+      if (getSimpleType(path) === 'number')
+        pathString += `[${path}]`;
+      else
+        pathString += `.${this._escapeKey(path)}`;
+    }
+    return pathString;
   }
 
   _escapeKey(key) {
     let newKey = '';
     for (let c of key) {
-      if (c === '.' || c === '\\')
+      if (PATH_SPECIAL_CHARS.includes(c))
         newKey += '\\';
       newKey += c;
     }

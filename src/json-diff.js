@@ -54,6 +54,7 @@ function compare(a, b, changes, pathStack) {
 function compareObjects(a, b, changes, pathStack) {
   let equal = true;
 
+  // Find modified and removed keys
   for (let [aKey, aVal] of Object.entries(a)) {
     pathStack.push(aKey);
     const bVal = b[aKey];
@@ -67,6 +68,7 @@ function compareObjects(a, b, changes, pathStack) {
     pathStack.pop(aKey);
   }
 
+  // Find new keys
   for (let [bKey, bVal] of Object.entries(b)) {
     pathStack.push(bKey);
     const aVal = a[bKey];
@@ -89,7 +91,9 @@ function compareArrays(a, b, changes, pathStack) {
   }
   else {
     for (let i = 0; i < a.length && equal; i++) {
+      pathStack.push(i);
       equal = compare(a[i], b[i], changes, pathStack) && equal;
+      pathStack.pop();
     }
   }
 
