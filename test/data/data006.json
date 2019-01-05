@@ -3,7 +3,7 @@
   "baz": {
     "something": null,
     "meaning": 42,
-    "special.chars": "oh yes",
+    "\\special.chars\\": "oh yes",
     "very": "config",
     "object?": {
       "uh oh": "I changed it to an object"

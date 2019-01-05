@@ -75,10 +75,9 @@ class SimpleFormatter extends Formatter {
   _escapeKey(key) {
     let newKey = '';
     for (let c of key) {
-      if (c === '.')
-        newKey += '(.)';
-      else
-        newKey += c;
+      if (c === '.' || c === '\\')
+        newKey += '\\';
+      newKey += c;
     }
     return newKey;
   }
