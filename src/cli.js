@@ -68,7 +68,9 @@ function runJsonDiff(argv) {
 
   Promise.all([readFile(file1), readFile(file2)])
     .then(([json1, json2]) => {
-      console.log(formatter.format(jsonDiff(json1, json2)));
+      const diff = jsonDiff(json1, json2);
+      if (diff.length > 0)
+        console.log(formatter.format(diff));
     })
     .catch(err => {
       exitError(err);
