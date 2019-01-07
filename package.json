@@ -15,7 +15,8 @@
   "author": "Connor Minton",
   "license": "ISC",
   "dependencies": {
-    "chalk": "^2.4.1"
+    "chalk": "^2.4.1",
+    "yargs": "^12.0.5"
   },
   "repository": {
     "type": "git",
