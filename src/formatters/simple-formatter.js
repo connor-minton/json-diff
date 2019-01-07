@@ -3,7 +3,7 @@ const chalk = require('chalk');
 const { INSERTION, MUTATION, DELETION } = require('../change').ChangeTypes;
 const { getSimpleType } = require('../util');
 
-const PATH_SPECIAL_CHARS = '\\[].'
+const PATH_SPECIAL_CHARS = new Set(' []."');
 
 class SimpleFormatter extends Formatter {
   constructor(options={}) {
@@ -82,13 +82,11 @@ class SimpleFormatter extends Formatter {
   }
 
   _escapeKey(key) {
-    let newKey = '';
     for (let c of key) {
-      if (PATH_SPECIAL_CHARS.includes(c))
-        newKey += '\\';
-      newKey += c;
+      if (PATH_SPECIAL_CHARS.has(c))
+        return JSON.stringify(key);
     }
-    return newKey;
+    return key;
   }
 }
 

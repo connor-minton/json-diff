@@ -3,8 +3,8 @@ class Formatter {
     this.options = Object.assign({}, config);
   }
 
-  format(change) {
-    return JSON.stringify(change);
+  format(changes) {
+    return '~~~Do not use Formatter directly. Extend Formatter and override `format()`.~~~';
   }
 }
 
