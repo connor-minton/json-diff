@@ -34,8 +34,8 @@ class SimpleFormatter extends Formatter {
     const chalk = this.chalk
       , toStr = chalk.green(this._getValueString(change.to))
       , changeType = chalk.green.bold('+')
-      , colon = chalk.bold(':')
-      , pathStr = chalk.green(this._getPathString(change.paths));
+      , colon = ':'
+      , pathStr = chalk.green.bold(this._getPathString(change.paths));
 
     return `${changeType} ${pathStr} ${colon} ${toStr}`;
   }
@@ -43,7 +43,7 @@ class SimpleFormatter extends Formatter {
   _getKeyRemovedString(change) {
     const chalk = this.chalk
       , changeType = chalk.red.bold('-')
-      , pathStr = chalk.red(this._getPathString(change.paths));
+      , pathStr = chalk.red.bold(this._getPathString(change.paths));
 
     return `${changeType} ${pathStr}`;
   }
@@ -52,10 +52,10 @@ class SimpleFormatter extends Formatter {
     const chalk = this.chalk
       , fromStr = chalk.red(this._getValueString(change.from))
       , changeType = chalk.bold('c')
-      , colon = chalk.bold(':')
-      , arrow = chalk.bold('->')
+      , colon = ':'
+      , arrow = '->'
       , toStr = chalk.green(this._getValueString(change.to))
-      , pathStr = this._getPathString(change.paths);
+      , pathStr = chalk.bold(this._getPathString(change.paths));
 
     return `${changeType} ${pathStr} ${colon} ${fromStr} ${arrow} ${toStr}`;
   }
