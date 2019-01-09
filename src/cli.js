@@ -24,20 +24,17 @@ cli
         .option('d', {
           alias: 'deleted',
           type: 'boolean',
-          describe: 'Show only deletions. Can be combined with -i and -c.',
-          default: true
+          describe: 'Show only deletions. Can be combined with -i and -c.'
         })
         .option('i', {
           alias: 'inserted',
           type: 'boolean',
-          describe: 'Show only insertions. Can be combined with -d and -c.',
-          default: true
+          describe: 'Show only insertions. Can be combined with -d and -c.'
         })
         .option('c', {
           alias: 'changed',
           type: 'boolean',
-          describe: 'Show only changes (mutations). Can be combined with -d and -i.',
-          default: true
+          describe: 'Show only changes (mutations). Can be combined with -d and -i.'
         })
         .option('f', {
           alias: 'format',

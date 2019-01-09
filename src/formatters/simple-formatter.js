@@ -5,29 +5,42 @@ const { getSimpleType } = require('../util');
 
 const PATH_SPECIAL_CHARS = new Set(' []."');
 
+const DEFAULTS = {
+  useColor: true,
+  showInsertions: true,
+  showDeletions: true,
+  showMutations: true
+};
+
 class SimpleFormatter extends Formatter {
   constructor(options={}) {
     super();
-    const defaults = {
-      useColor: true
-    };
-    this.options = Object.assign({}, defaults, options);
+    this.options = Object.assign({}, DEFAULTS, options);
     this.chalk = new chalk.constructor({enabled: this.options.useColor});
   }
 
   format(changes) {
-    return changes.map(change => {
+    const changeStrings = [];
+    for (let change of changes) {
       switch (change.type) {
-      case INSERTION:
-        return this._getKeyAddedString(change);
-      case DELETION:
-        return this._getKeyRemovedString(change);
-      case MUTATION:
-        return this._getValueChangedString(change);
-      default:
-        throw new Error('unknown change type');
+        case INSERTION:
+          if (this.options.showInsertions)
+            changeStrings.push(this._getKeyAddedString(change));
+          break;
+        case DELETION:
+          if (this.options.showDeletions)
+            changeStrings.push(this._getKeyRemovedString(change));
+          break;
+        case MUTATION:
+          if (this.options.showMutations)
+            changeStrings.push(this._getValueChangedString(change));
+          break;
+        default:
+          throw new Error('unknown change type');
       }
-    }).join('\n');
+    }
+
+    return changeStrings.join('\n');
   }
 
   _getKeyAddedString(change) {
