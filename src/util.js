@@ -44,6 +44,12 @@ function promisify(asyncFunc) {
   };
 }
 
+function has(obj, prop) {
+  if (obj != null)
+    return Object.prototype.hasOwnProperty(obj, prop);
+  return false;
+}
+
 module.exports = {
   JsonDiffError,
   NotComparableError,
@@ -51,5 +57,6 @@ module.exports = {
   getSimpleType,
   assertComparable,
   parseJsonOrThrow,
-  promisify
+  promisify,
+  has
 };

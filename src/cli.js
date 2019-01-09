@@ -21,24 +21,31 @@ cli
           describe: 'Colorized output is on by default. To turn off, pass `--no-color`.',
           default: true
         })
-        // .option('d', {
-        //   alias: 'deleted',
-        //   type: 'boolean',
-        //   describe: 'Show only deletions. Can be combined with -i and -c.',
-        //   default: true
-        // })
-        // .option('i', {
-        //   alias: 'inserted',
-        //   type: 'boolean',
-        //   describe: 'Show only insertions. Can be combined with -d and -c.',
-        //   default: true
-        // })
-        // .option('c', {
-        //   alias: 'changed',
-        //   type: 'boolean',
-        //   describe: 'Show only changes (mutations). Can be combined with -d and -i.',
-        //   default: true
-        // })
+        .option('d', {
+          alias: 'deleted',
+          type: 'boolean',
+          describe: 'Show only deletions. Can be combined with -i and -c.',
+          default: true
+        })
+        .option('i', {
+          alias: 'inserted',
+          type: 'boolean',
+          describe: 'Show only insertions. Can be combined with -d and -c.',
+          default: true
+        })
+        .option('c', {
+          alias: 'changed',
+          type: 'boolean',
+          describe: 'Show only changes (mutations). Can be combined with -d and -i.',
+          default: true
+        })
+        .option('f', {
+          alias: 'format',
+          type: 'string',
+          describe: 'Specify the output format. Defaults to `simple`.',
+          default: 'simple',
+          choices: ['simple']
+        })
         // .option('D', {
         //   alias: 'depth',
         //   type: 'number',
@@ -60,11 +67,11 @@ cli.parse();
 // -----------------------------------------------------------------------------
 
 function runJsonDiff(argv) {
-  config.useArgv(argv);
-  const { file1, file2, useColor } = config.values;
+  config.mergeCliArgs(argv);
+  const { file1, file2 } = config.values;
 
   const Formatter = config.get('Formatter');
-  const formatter = new Formatter({ useColor });
+  const formatter = new Formatter(config.values);
 
   Promise.all([readFile(file1), readFile(file2)])
     .then(([json1, json2]) => {
