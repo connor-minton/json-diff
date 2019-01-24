@@ -12,6 +12,8 @@ function getSimpleType(thing) {
     return 'number';
   if (typeOf === 'undefined')
     return 'undefined';
+  if (typeOf === 'function')
+    return 'function';
   if (Array.isArray(thing))
     return 'array';
   return 'object';
