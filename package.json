@@ -1,6 +1,6 @@
 {
   "name": "@cminton/json-diff",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Output the diff of two JSONs",
   "main": "index.js",
   "scripts": {
